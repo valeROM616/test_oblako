@@ -13,3 +13,18 @@
  *= require_tree .
  *= require_self
  */
+
+.header{
+    display: inline;
+    width: 100%;
+    min-height: 3rem;
+    position: fixed;
+    top: 0;
+    background: dodgerblue;
+}
+
+.add__todo{
+    float: right;
+    width: 3rem;
+    link: true;
+}

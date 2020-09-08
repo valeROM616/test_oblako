@@ -1,3 +1,13 @@
 // Place all the styles related to the Project controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.project{
+  display: inline-block;
+  width: 200px;
+  min-height: 180px;
+  background: antiquewhite;
+  box-shadow: 2px 2px 0 0 grey;
+}
+.todo{
+  border: 1px solid grey;
+}

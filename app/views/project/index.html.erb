@@ -1,0 +1,14 @@
+<% @projects.each do |project| %>
+  <div class="project">
+    <h3> <%= project['title'] %> </h3>
+    <% project['todos'].each do |todo| %>
+      <div class="todo">
+        <p><%= todo['text'] %></p>
+        <%# link_to project_path(id: project['id'], todo: todo['id'], method: "patch") do %>
+         <%#=# check_box_tag(:isCompleted, checked=todo['isCompleted']) %>
+          <p><%= todo['isCompleted'] %></p>
+        <%# end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
