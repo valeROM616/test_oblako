@@ -2,9 +2,8 @@ class ProjectController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    @projects = Project.all
-    @projects = JSON.parse(@projects.to_json(include: :todos))
-    render json: @projects.to_json
+    @projects = JSON.parse(Project.all.to_json(include: :todos))
+    render json: JSON.pretty_generate(@projects)
   end
 
   def create_todo
