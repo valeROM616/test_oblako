@@ -2,39 +2,37 @@ class ProjectController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    @projects = JSON.parse(Project.all.to_json(include: :todos))
-    render json: JSON.pretty_generate(@projects)
+    render json: JSON.parse(Project.all.to_json(include: :todos))
   end
 
   def create_todo
     todo_parameters = todo_params
     todo_parameters = todo_parameters.to_h
     if Project.where(title: todo_parameters['project_title']).empty?
-      project = Project.create(title: todo_parameters['project_title'])
+      project = Project.new(title: todo_parameters['project_title'])
       project.save
+      project_id = project.id
       todo_parameters['project_id'] = project.id
-      puts 'hello'
+    else
+      project_id = Project.where(title: todo_parameters['project_title']).first.id
     end
     todo_parameters.delete('project_title')
-    todo = Todo.new(todo_parameters)
+    todo = Todo.new(text: todo_parameters['text'], project_id: project_id)
     if todo.save
-      render json: { message: 'ok' }
+      render json: {message: 'ok'}
     else
-      render json: { message: todo.errors.messages }
+      render json: {message: todo.errors.messages}
     end
   end
 
   def update
     todo = Todo.find(todo_patch['todo_id'])
-    if todo.isCompleted == false
-      todo.isCompleted = true
-    else
-      todo.isCompleted = false
-    end
+    todo.isCompleted = !todo.isCompleted
+
     if todo.save
-      render json: { message: 'ok' }
+      render json: {message: 'ok'}
     else
-      render json: { message: todo.errors.messages }
+      render json: {message: todo.errors.messages}
     end
   end
 
