@@ -2,22 +2,15 @@ class ProjectController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    render json: JSON.parse(Project.all.to_json(include: :todos))
+    projects = Project.all
+    render json: projects.as_json(include: :todos)
   end
 
   def create_todo
-    todo_parameters = todo_params
-    todo_parameters = todo_parameters.to_h
-    if Project.where(title: todo_parameters['project_title']).empty?
-      project = Project.new(title: todo_parameters['project_title'])
-      project.save
-      project_id = project.id
-      todo_parameters['project_id'] = project.id
-    else
-      project_id = Project.where(title: todo_parameters['project_title']).first.id
+    proj = Project.where(title: todo_params['project_title']).first_or_create do |project|
+      project.title = todo_params['project_title']
     end
-    todo_parameters.delete('project_title')
-    todo = Todo.new(text: todo_parameters['text'], project_id: project_id)
+    todo = Todo.new(text: todo_params['text'], project_id: proj.id)
     if todo.save
       render json: {message: 'ok'}
     else
