@@ -12,7 +12,7 @@ class ProjectController < ApplicationController
     end
     todo = Todo.new(text: todo_params['text'], project_id: proj.id)
     if todo.save
-      render json: {todo: todo, project_title: todo_params['project_title']}
+      render json: todo
     else
       render json: {message: todo.errors.messages}
     end
